@@ -1,0 +1,25 @@
+# Butiksdata och importer – får aldrig publiceras
+*.sqlite
+*.sqlite3
+*.sqlite3-*
+*.db
+*.xls
+*.xlsx
+*.csv
+*.tsv
+*.pdf
+*.jsonl
+browser-profile/
+verification-captures/
+private/
+cookies*
+sessions*
+
+# Releaseartefakter hör hemma i GitHub Releases, inte i git-trädet
+*.whl
+*.exe
+*.dmg
+*.pkg
+update-manifest.json
+SHA256SUMS.txt
+

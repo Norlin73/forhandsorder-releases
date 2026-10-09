@@ -1,0 +1,31 @@
+name: Kontrollera att repot saknar butiksdata
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  no-store-data:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Stoppa förbjudna filer och namn
+        shell: bash
+        run: |
+          set -euo pipefail
+          forbidden="$(find . -type f \
+            \( -iname '*.sqlite' -o -iname '*.sqlite3' -o -iname '*.db' \
+               -o -iname '*.xls' -o -iname '*.xlsx' -o -iname '*.csv' \
+               -o -iname '*.tsv' -o -iname '*.pdf' -o -iname '*.jsonl' \) \
+            -not -path './.git/*' -print)"
+          named="$(find . -type f \
+            \( -ipath '*browser-profile*' -o -ipath '*verification-captures*' \
+               -o -iname '*cookies*' -o -iname '*sessions*' \) \
+            -not -path './.git/*' -print)"
+          if [[ -n "$forbidden$named" ]]; then
+            printf '%s\n%s\n' "$forbidden" "$named"
+            exit 1
+          fi
